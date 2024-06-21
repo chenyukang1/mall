@@ -1,0 +1,47 @@
+server:
+  port: 6770
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: '123456'
+    url: jdbc:mysql://116.198.200.0:3306/mall_order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 116.198.200.0:8848
+#      config:
+#        server-addr: 116.198.200.0:8848
+#        namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
+  tx-service-group: ${spring.application.name}-tx-group
+  config:
+    type: nacos
+    # 需要和server在同一个注册中心下
+    nacos:
+      namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
+      serverAddr: 116.198.200.0:8848
+      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
+      group: SEATA_GROUP
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
+      application: seata-server
+      server-addr: 116.198.200.0:8848
+      group: SEATA_GROUP
+      namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
+      username: "nacos"
+      password: "nacos"
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
