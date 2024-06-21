@@ -1,17 +1,20 @@
 server:
-  port: 6880
+  port: 7770
 spring:
   application:
-    name: storage-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: '123456'
-    url: jdbc:mysql://116.198.200.0:3306/mall_storage?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+    name: business-service
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: '123456'
+#    url: jdbc:mysql://116.198.200.0:3306/mall_order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
   cloud:
     nacos:
       discovery:
         server-addr: 116.198.200.0:8848
+#      config:
+#        server-addr: 116.198.200.0:8848
+#        namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
 
 seata:
   enabled: true

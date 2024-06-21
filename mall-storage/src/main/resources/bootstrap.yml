@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 116.198.200.0:8848
+        namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
+        group: DEFAULT_GROUP
