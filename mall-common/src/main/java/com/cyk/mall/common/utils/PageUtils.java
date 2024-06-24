@@ -10,7 +10,6 @@ package com.cyk.mall.common.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,8 +19,7 @@ import java.util.List;
  * @author Mark sunlightcs@gmail.com
  */
 public class PageUtils implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4117322420391582682L;
 	/**
 	 * 总记录数
 	 */

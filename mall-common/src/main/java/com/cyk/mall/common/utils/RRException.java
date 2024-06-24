@@ -1,7 +1,5 @@
 package com.cyk.mall.common.utils;
 
-import java.io.Serial;
-
 /**
  * 自定义异常
  * 
@@ -10,10 +8,9 @@ import java.io.Serial;
  * @date 2016年10月27日 下午10:11:27
  */
 public class RRException extends RuntimeException {
-	@Serial
-	private static final long serialVersionUID = 1L;
-	
-    private String msg;
+
+	private static final long serialVersionUID = 8279012106339652123L;
+	private String msg;
     private int code = 500;
     
     public RRException(String msg) {

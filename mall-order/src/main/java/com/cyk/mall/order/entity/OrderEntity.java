@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -18,9 +17,8 @@ import java.math.BigDecimal;
 @Data
 @TableName("tab_order")
 public class OrderEntity implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 3463717735630595350L;
 	/**
 	 * 
 	 */
