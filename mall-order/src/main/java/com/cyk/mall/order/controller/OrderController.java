@@ -4,6 +4,7 @@ import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.common.utils.R;
 import com.cyk.mall.order.entity.OrderEntity;
 import com.cyk.mall.order.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,8 @@ import java.util.Map;
  * @date 2024-06-21 12:28:27
  */
 @RestController
-@RequestMapping("order/order")
+@RequestMapping("/order")
+@Slf4j
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -27,6 +29,14 @@ public class OrderController {
     public R save(long userId , long productId) {
         boolean res = orderService.save(userId, productId);
         return R.ok().put("res", res);
+    }
+
+    @ResponseBody
+    @GetMapping("/submitOrder")
+    public R submitOrder(long userId, long productId, long used) {
+        log.info("提交订单 商品 {}, 锁库存 {}", productId, used);
+        orderService.submitOrder(userId, productId, used);
+        return R.ok().put("res", "success");
     }
 
     /**

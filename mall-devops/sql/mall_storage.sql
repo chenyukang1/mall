@@ -11,6 +11,7 @@ CREATE TABLE `tab_storage`
     `product_id` bigint(11) DEFAULT NULL COMMENT '产品id',
     `total`      int(11) DEFAULT NULL COMMENT '总库存',
     `used`       int(11) DEFAULT NULL COMMENT '已用库存',
+    `version`    int(11) NOT NULL DEFAULT 0 COMMENT '乐观锁控制字段',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 INSERT INTO `tab_storage` (`product_id`, `total`, `used`)

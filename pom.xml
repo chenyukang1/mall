@@ -25,7 +25,7 @@
         <module>mall-devops</module>
         <module>mall-order</module>
         <module>mall-common</module>
-        <module>mall-storage</module>
+        <module>mall-stock</module>
         <module>mall-business</module>
     </modules>
     <scm>

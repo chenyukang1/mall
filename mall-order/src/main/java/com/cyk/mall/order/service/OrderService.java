@@ -3,6 +3,7 @@ package com.cyk.mall.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.order.entity.OrderEntity;
+import com.cyk.mall.order.to.OrderTo;
 
 import java.util.Map;
 
@@ -18,5 +19,9 @@ public interface OrderService extends IService<OrderEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     boolean save(long userId, long productId);
+
+    void submitOrder(long userId, long productId, long used);
+
+    void closeOrder(OrderTo orderTo);
 }
 

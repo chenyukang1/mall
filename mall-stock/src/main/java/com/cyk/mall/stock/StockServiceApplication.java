@@ -1,4 +1,4 @@
-package com.cyk.mall.order;
+package com.cyk.mall.stock;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
@@ -15,11 +15,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  **/
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients("com.cyk.mall.order.feign")
+@EnableFeignClients("com.cyk.mall.stock.feign")
 @EnableRabbit
-public class OrderServiceApplication {
+public class StockServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(StockServiceApplication.class, args);
     }
 }

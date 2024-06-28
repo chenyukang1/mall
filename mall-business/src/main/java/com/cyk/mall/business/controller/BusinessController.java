@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * The class BusinessController.
@@ -23,6 +24,7 @@ public class BusinessController {
     BusinessService businessService;
 
     @GlobalTransactional(timeoutMills = 300000)
+    @ResponseBody
     @GetMapping("/submitOrder")
     public R submitOrder(long userId, long productId, long used) {
         businessService.submitOrder(userId, productId, used);
