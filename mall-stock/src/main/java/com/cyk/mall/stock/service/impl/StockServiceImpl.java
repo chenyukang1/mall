@@ -4,23 +4,26 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cyk.mall.common.enums.Exchanges;
-import com.cyk.mall.common.enums.RoutingKey;
+import com.cyk.mall.common.req.LockStockReq;
 import com.cyk.mall.common.to.OrderTo;
 import com.cyk.mall.common.to.StockTo;
 import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.common.utils.Query;
 import com.cyk.mall.common.utils.R;
 import com.cyk.mall.stock.dao.StockDao;
-import com.cyk.mall.stock.entity.StockEntity;
+import com.cyk.mall.stock.dao.StockOrderDao;
+import com.cyk.mall.stock.domain.po.StockEntity;
+import com.cyk.mall.stock.domain.po.StockOrderEntity;
+import com.cyk.mall.stock.domain.to.StockLockTo;
 import com.cyk.mall.stock.feign.OrderFeignService;
 import com.cyk.mall.stock.service.StockService;
-import com.cyk.mall.stock.to.StockLockTo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 
@@ -28,8 +31,11 @@ import java.util.Map;
 @Slf4j
 public class StockServiceImpl extends ServiceImpl<StockDao, StockEntity> implements StockService {
 
-    @Autowired
+    @Resource
     private StockDao stockDao;
+
+    @Resource
+    private StockOrderDao stockOrderDao;
 
     @Autowired
     private OrderFeignService orderFeignService;
@@ -48,22 +54,14 @@ public class StockServiceImpl extends ServiceImpl<StockDao, StockEntity> impleme
     }
 
     @Override
-    public boolean lockStock(long productId, long used, long orderSn) {
-        if (stockDao.lockStock(productId, used) > 0) {
-            Integer version = getOne(new QueryWrapper<StockEntity>().eq("product_id", productId)).getVersion();
-            StockLockTo stockLockTo = new StockLockTo();
-            stockLockTo.setProductId(productId);
-            stockLockTo.setUsed(used);
-            stockLockTo.setOrderSn(orderSn);
-            stockLockTo.setVersion(version);
-
-            // 发送消息到mq延迟队列，判断是否需要回滚库存
-            // - 订单不存在，回滚
-            // - 订单已取消，回滚
-            rabbitTemplate.convertAndSend(Exchanges.STOCK_EVENT_EXCHANGE.getName(),
-                    RoutingKey.STOCK_LOCK_STOCK.getName(),
-                    stockLockTo);
-            return true;
+    @Transactional
+    public boolean lockStock(LockStockReq lockStockReq) {
+        if (stockDao.lockStock(lockStockReq.getSku(), lockStockReq.getLockCount()) > 0) {
+            StockOrderEntity stockOrderEntity = new StockOrderEntity();
+            stockOrderEntity.setSku(lockStockReq.getSku());
+            stockOrderEntity.setOrderSn(lockStockReq.getOrderSn());
+            stockOrderEntity.setStockSubtractionCount(lockStockReq.getLockCount());
+            stockOrderDao.insert(stockOrderEntity);
         }
         return false;
     }

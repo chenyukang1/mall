@@ -1,17 +1,18 @@
 package com.cyk.mall.order.dao;
 
-import com.cyk.mall.order.domain.po.OrderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cyk.mall.order.domain.po.MQTaskEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 
- * 
- * @author chenyk
+ * The class MQTaskDao.
+ *
+ * @author chenyukang
  * @email chen.yukang@qq.com
- * @date 2024-06-21 12:28:27
+ * @date 2024/8/9
  */
 @Mapper
-public interface OrderDao extends BaseMapper<OrderEntity> {
-	
+public interface MQTaskDao extends BaseMapper<MQTaskEntity> {
+
 }
+

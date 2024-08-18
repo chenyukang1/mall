@@ -1,8 +1,9 @@
 package com.cyk.mall.stock.controller;
 
+import com.cyk.mall.common.req.LockStockReq;
 import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.common.utils.R;
-import com.cyk.mall.stock.entity.StockEntity;
+import com.cyk.mall.stock.domain.po.StockEntity;
 import com.cyk.mall.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,9 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @GetMapping("/lockStock")
-    public R lockStock(long productId, long used, long orderSn) {
-        boolean res = stockService.lockStock(productId, used, orderSn);
+    @PostMapping("/lockStock")
+    public R lockStock(LockStockReq lockStockReq) {
+        boolean res = stockService.lockStock(lockStockReq);
         return res ? R.ok().put("res", true) : R.error("lock fail");
     }
 

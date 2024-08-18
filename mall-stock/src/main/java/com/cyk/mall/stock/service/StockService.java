@@ -1,10 +1,11 @@
 package com.cyk.mall.stock.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cyk.mall.common.req.LockStockReq;
 import com.cyk.mall.common.to.StockTo;
 import com.cyk.mall.common.utils.PageUtils;
-import com.cyk.mall.stock.entity.StockEntity;
-import com.cyk.mall.stock.to.StockLockTo;
+import com.cyk.mall.stock.domain.po.StockEntity;
+import com.cyk.mall.stock.domain.to.StockLockTo;
 
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public interface StockService extends IService<StockEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    boolean lockStock(long productId, long used, long orderSn);
+    boolean lockStock(LockStockReq lockStockReq);
 
     void unlockStock(StockLockTo stockLockTo);
 
