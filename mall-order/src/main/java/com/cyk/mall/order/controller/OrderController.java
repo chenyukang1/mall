@@ -2,12 +2,13 @@ package com.cyk.mall.order.controller;
 
 import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.common.utils.R;
-import com.cyk.mall.order.entity.OrderEntity;
+import com.cyk.mall.order.domain.po.OrderEntity;
+import com.cyk.mall.order.domain.req.SubmitOrderReq;
 import com.cyk.mall.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -22,20 +23,21 @@ import java.util.Map;
 @RequestMapping("/order")
 @Slf4j
 public class OrderController {
-    @Autowired
+
+    @Resource
     private OrderService orderService;
 
-    @GetMapping("/save")
-    public R save(long userId , long productId) {
-        boolean res = orderService.save(userId, productId);
-        return R.ok().put("res", res);
+    @PostMapping("/submitOrder")
+    public R submitOrder(@RequestBody SubmitOrderReq submitOrderReq) {
+        log.info("提交订单 {}", submitOrderReq);
+        orderService.submitOrder(submitOrderReq);
+        return R.ok().put("res", "success");
     }
 
-    @ResponseBody
-    @GetMapping("/submitOrder")
-    public R submitOrder(long userId, long productId, long used) {
-        log.info("提交订单 商品 {}, 锁库存 {}", productId, used);
-        orderService.submitOrder(userId, productId, used);
+    @PostMapping("/submitOrderV2")
+    public R submitOrderV2(@RequestBody SubmitOrderReq submitOrderReq) {
+        log.info("提交订单 {}", submitOrderReq);
+        orderService.submitOrderV2(submitOrderReq);
         return R.ok().put("res", "success");
     }
 

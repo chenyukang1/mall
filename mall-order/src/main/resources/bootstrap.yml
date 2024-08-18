@@ -3,5 +3,5 @@ spring:
     nacos:
       config:
         server-addr: 116.198.200.0:8848
-        namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
-        group: SEATA_GROUP
+        namespace: 76043697-5ea5-47b3-8805-9d9511e95de6
+        group: DEFAULT_GROUP

@@ -4,20 +4,18 @@
 <mapper namespace="com.cyk.mall.stock.dao.StockDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.cyk.mall.stock.entity.StockEntity" id="stockMap">
+    <resultMap type="com.cyk.mall.stock.domain.po.StockEntity" id="stockMap">
         <result property="id" column="id"/>
-        <result property="productId" column="product_id"/>
-        <result property="total" column="total"/>
-        <result property="used" column="used"/>
-        <result property="version" column="version"/>
+        <result property="sku" column="sku"/>
+        <result property="stockCount" column="stock_count"/>
+        <result property="stockCountSurplus" column="stock_count_surplus"/>
     </resultMap>
 
     <update id="lockStock">
-        UPDATE tab_storage
-        SET used = used + #{num}
-        WHERE
-            product_id = #{productId}
-          AND total - used >= #{num}
+        UPDATE tab_stock
+        SET stock_count_surplus = stock_count_surplus - #{lockCount}
+        WHERE sku = #{sku}
+          AND stock_count_surplus - #{lockCount} >= 0
     </update>
 
     <update id="unlockStock">

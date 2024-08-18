@@ -2,7 +2,7 @@ package com.cyk.mall.stock.listener;
 
 import com.cyk.mall.common.to.StockTo;
 import com.cyk.mall.stock.service.StockService;
-import com.cyk.mall.stock.to.StockLockTo;
+import com.cyk.mall.stock.domain.to.StockLockTo;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;

@@ -4,10 +4,11 @@
 <mapper namespace="com.cyk.mall.order.dao.OrderDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.cyk.mall.order.entity.OrderEntity" id="orderMap">
+    <resultMap type="com.cyk.mall.order.domain.po.OrderEntity" id="orderMap">
         <result property="id" column="id"/>
         <result property="userId" column="user_id"/>
-        <result property="productId" column="product_id"/>
+        <result property="orderSn" column="order_sn"/>
+        <result property="outBusinessNo" column="out_business_no"/>
         <result property="count" column="count"/>
         <result property="money" column="money"/>
         <result property="status" column="status"/>

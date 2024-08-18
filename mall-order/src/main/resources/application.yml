@@ -14,12 +14,14 @@ spring:
         server-addr: 116.198.200.0:8848
         namespace: 9b648059-4aae-4965-8cc4-6b758b4b6f73
         group: SEATA_GROUP
-  rabbitmq:
-    host: 114.55.150.242
-    port: 5672
-    listener:
-      simple:
-        acknowledge-mode: manual
+
+rocketmq:
+  name-server: 47.100.41.27:9876
+  producer:
+    group: mall-default-producer-group # 必须指定group
+    send-message-timeout: 3000 # 消息发送超时时长，默认3s
+    retry-times-when-send-failed: 1 # 同步发送消息失败重试次数，默认2
+    retry-times-when-send-async-failed: 1 # 异步发送消息失败重试次数，默认2
 
 #seata:
 #  application-id: seata-server
