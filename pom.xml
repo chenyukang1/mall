@@ -27,6 +27,7 @@
         <module>mall-common</module>
         <module>mall-stock</module>
         <module>mall-business</module>
+        <module>mall-pay</module>
     </modules>
     <scm>
         <connection/>

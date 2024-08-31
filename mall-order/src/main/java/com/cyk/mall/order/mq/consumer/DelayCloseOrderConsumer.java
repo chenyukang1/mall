@@ -2,7 +2,7 @@ package com.cyk.mall.order.mq.consumer;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cyk.mall.common.constant.Constants;
+import com.cyk.mall.common.domain.constant.Constants;
 import com.cyk.mall.order.dao.MQRecordDao;
 import com.cyk.mall.order.dao.MQTaskDao;
 import com.cyk.mall.order.dao.OrderDao;
@@ -10,7 +10,7 @@ import com.cyk.mall.order.domain.po.MQRecordEntity;
 import com.cyk.mall.order.domain.po.MQTaskEntity;
 import com.cyk.mall.order.domain.po.OrderEntity;
 import com.cyk.mall.order.mq.event.DelayCloseOrderEvent;
-import com.cyk.mall.order.mq.event.UnLockStockEvent;
+import com.cyk.mall.order.mq.event.RollbackStockEvent;
 import com.cyk.mall.order.mq.producer.UnlockStockProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
@@ -75,35 +75,35 @@ public class DelayCloseOrderConsumer implements RocketMQListener<DelayCloseOrder
         orderDao.update(updateEntity, queryWrapper);
 
         // 2.2、回滚库存消息入库
-        UnLockStockEvent unLockStockEvent = new UnLockStockEvent();
-        unLockStockEvent.setUuid(UUID.randomUUID().toString());
-        unLockStockEvent.setSku(orderEntity.getSku());
-        unLockStockEvent.setCount(orderEntity.getCount());
+        RollbackStockEvent rollbackStockEvent = new RollbackStockEvent();
+        rollbackStockEvent.setUuid(UUID.randomUUID().toString());
+        rollbackStockEvent.setSku(orderEntity.getSku());
+        rollbackStockEvent.setCount(orderEntity.getCount());
 
         MQTaskEntity MQTaskEntity = new MQTaskEntity();
         MQTaskEntity.setUserId(orderEntity.getUserId());
         MQTaskEntity.setTopic(Constants.Topic.UNLOCK_STOCK_TOPIC);
-        MQTaskEntity.setMessageId(unLockStockEvent.getUuid());
-        MQTaskEntity.setMessage(unLockStockEvent);
+        MQTaskEntity.setMessageId(rollbackStockEvent.getUuid());
+        MQTaskEntity.setMessage(rollbackStockEvent);
         MQTaskEntity.setState(Constants.MQTaskStatus.CREATE);
         mqTaskDao.insert(MQTaskEntity);
 
         // 3、回滚库存，发消息失败不回滚事务，等待定时任务扫task补偿
         try {
-            SendResult sendResult = unlockStockProducer.syncSend(unLockStockEvent);
+            SendResult sendResult = unlockStockProducer.syncSend(rollbackStockEvent);
             if (sendResult.getSendStatus() == SendStatus.SEND_OK) {
                 log.info("定时关单消息 {} 发送成功", delayCloseOrderEvent);
                 MQTaskEntity taskUpdateEntity = new MQTaskEntity();
                 taskUpdateEntity.setState(Constants.MQTaskStatus.COMPLETED);
                 QueryWrapper<MQTaskEntity> taskQueryWrapper = new QueryWrapper<>();
-                taskQueryWrapper.eq("message_id", unLockStockEvent.getUuid());
+                taskQueryWrapper.eq("message_id", rollbackStockEvent.getUuid());
                 mqTaskDao.update(taskUpdateEntity, taskQueryWrapper);
             } else {
                 log.info("定时关单消息 {} 发送失败", delayCloseOrderEvent);
                 MQTaskEntity taskUpdateEntity = new MQTaskEntity();
                 taskUpdateEntity.setState(Constants.MQTaskStatus.FAIL);
                 QueryWrapper<MQTaskEntity> taskQueryWrapper = new QueryWrapper<>();
-                taskQueryWrapper.eq("message_id", unLockStockEvent.getUuid());
+                taskQueryWrapper.eq("message_id", rollbackStockEvent.getUuid());
                 mqTaskDao.update(taskUpdateEntity, taskQueryWrapper);
             }
         } catch (Exception e) {
@@ -111,7 +111,7 @@ public class DelayCloseOrderConsumer implements RocketMQListener<DelayCloseOrder
             MQTaskEntity taskUpdateEntity = new MQTaskEntity();
             taskUpdateEntity.setState(Constants.MQTaskStatus.FAIL);
             QueryWrapper<MQTaskEntity> taskQueryWrapper = new QueryWrapper<>();
-            taskQueryWrapper.eq("message_id", unLockStockEvent.getUuid());
+            taskQueryWrapper.eq("message_id", rollbackStockEvent.getUuid());
             mqTaskDao.update(taskUpdateEntity, taskQueryWrapper);
         }
     }

@@ -3,7 +3,7 @@ package com.cyk.mall.order.mq.producer;
 import com.cyk.mall.common.domain.constant.Constants;
 import com.cyk.mall.common.mq.model.BaseSendExtendDTO;
 import com.cyk.mall.common.mq.producer.AbstractCommonSendProducer;
-import com.cyk.mall.order.mq.event.RollbackStockEvent;
+import com.cyk.mall.order.mq.event.SubmitOrderSuccessEvent;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
  * @date 2024/8/9
  */
 @Service
-public class UnlockStockProducer extends AbstractCommonSendProducer<RollbackStockEvent> {
+public class SubmitOrderSuccessProducer extends AbstractCommonSendProducer<SubmitOrderSuccessEvent> {
 
     @Override
-    protected BaseSendExtendDTO buildBaseSendExtendParam(RollbackStockEvent rollbackStockEvent) {
+    protected BaseSendExtendDTO buildBaseSendExtendParam(SubmitOrderSuccessEvent messageSendEvent) {
         return BaseSendExtendDTO.builder()
-                .eventName("回滚库存消息")
-                .topic(Constants.Topic.UNLOCK_STOCK_TOPIC)
-                .keys(String.valueOf(rollbackStockEvent.getSku()))
-                .delayLevel(0)
+                .eventName("下单成功消息")
+                .topic(Constants.Topic.SUBMIT_ORDER_SUCCESS_TOPIC)
+                .keys(String.valueOf(messageSendEvent.getOrderId()))
+                .delayLevel(1)
                 .sendTimeout(1000L)
                 .build();
     }

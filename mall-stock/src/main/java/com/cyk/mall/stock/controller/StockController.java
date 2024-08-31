@@ -1,6 +1,6 @@
 package com.cyk.mall.stock.controller;
 
-import com.cyk.mall.common.req.LockStockReq;
+import com.cyk.mall.common.domain.req.LockStockReq;
 import com.cyk.mall.common.utils.PageUtils;
 import com.cyk.mall.common.utils.R;
 import com.cyk.mall.stock.domain.po.StockEntity;

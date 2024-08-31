@@ -1,12 +1,12 @@
 package com.cyk.mall.order.task;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cyk.mall.common.constant.Constants;
+import com.cyk.mall.common.domain.constant.Constants;
 import com.cyk.mall.common.mq.model.MessageWrapper;
 import com.cyk.mall.common.mq.producer.AbstractCommonSendProducer;
 import com.cyk.mall.order.dao.MQTaskDao;
 import com.cyk.mall.order.domain.po.MQTaskEntity;
-import com.cyk.mall.order.holder.ApplicationContextHolder;
+import com.cyk.mall.common.support.holder.ApplicationContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;

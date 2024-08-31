@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * The class UnLockStockEvent.
+ * The class RollbackStockEvent.
  *
  * @author chenyukang
  * @email chen.yukang@qq.com
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UnLockStockEvent extends MessageWrapper {
+public class RollbackStockEvent extends MessageWrapper {
 
     private static final long serialVersionUID = -6234149779546940825L;
 

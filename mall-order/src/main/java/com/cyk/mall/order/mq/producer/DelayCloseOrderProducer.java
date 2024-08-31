@@ -1,6 +1,6 @@
 package com.cyk.mall.order.mq.producer;
 
-import com.cyk.mall.common.constant.Constants;
+import com.cyk.mall.common.domain.constant.Constants;
 import com.cyk.mall.common.mq.model.BaseSendExtendDTO;
 import com.cyk.mall.common.mq.producer.AbstractCommonSendProducer;
 import com.cyk.mall.order.mq.event.DelayCloseOrderEvent;

@@ -1,6 +1,7 @@
-package com.cyk.mall.order.holder;
+package com.cyk.mall.common.support.holder;
 
 import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -20,7 +21,7 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 

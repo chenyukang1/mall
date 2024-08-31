@@ -22,7 +22,7 @@ CREATE TABLE `tab_order`
     UNIQUE KEY `uq_out_business_no` (`out_business_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单流水表';
 
--- 消息任务表
+-- 消息发送任务表
 CREATE TABLE `mq_task`
 (
     `id`          int unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -38,9 +38,21 @@ CREATE TABLE `mq_task`
     UNIQUE KEY `uq_message_id` (`message_id`),
     KEY           `idx_state` (`state`),
     KEY           `idx_create_time` (`update_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息发送任务表';
 
--- 消息记录表
+-- 消息事务记录表
+CREATE TABLE `mq_transaction`
+(
+    `id`             int unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+    `transaction_id` varchar(11)  NOT NULL COMMENT '消息事务ID',
+    `create_time`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_transaction_id` (`transaction_id`),
+    KEY              `idx_create_time` (`update_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息事务记录表';
+
+-- 消息消费记录表
 CREATE TABLE `mq_record`
 (
     `id`          int unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -52,4 +64,4 @@ CREATE TABLE `mq_record`
     PRIMARY KEY (`id`),
     UNIQUE KEY `uq_message_id` (`message_id`),
     KEY           `idx_create_time` (`update_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息消费记录表';

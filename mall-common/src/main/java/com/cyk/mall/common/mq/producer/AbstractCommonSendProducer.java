@@ -1,5 +1,6 @@
 package com.cyk.mall.common.mq.producer;
 
+import com.cyk.mall.common.mq.handler.ITransactionMsgHandler;
 import com.cyk.mall.common.mq.model.BaseSendExtendDTO;
 import com.cyk.mall.common.mq.model.MessageWrapper;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +39,7 @@ public abstract class AbstractCommonSendProducer<T extends MessageWrapper> {
         );
     }
 
-    public final SendResult sendMessageInTransaction(T messageSendEvent, Object arg) {
+    public final SendResult sendMessageInTransaction(T messageSendEvent, ITransactionMsgHandler transactionMsgHandler) {
         BaseSendExtendDTO baseSendExtendDTO = buildBaseSendExtendParam(messageSendEvent);
         StringBuilder destination = new StringBuilder(baseSendExtendDTO.getTopic());
         String tag = baseSendExtendDTO.getTag();
@@ -47,7 +48,7 @@ public abstract class AbstractCommonSendProducer<T extends MessageWrapper> {
         }
         return rocketMQTemplate.sendMessageInTransaction(destination.toString(),
                 buildMessage(messageSendEvent, baseSendExtendDTO),
-                arg
+                transactionMsgHandler
         );
     }
 

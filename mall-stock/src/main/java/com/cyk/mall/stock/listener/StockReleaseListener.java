@@ -1,6 +1,6 @@
 package com.cyk.mall.stock.listener;
 
-import com.cyk.mall.common.to.StockTo;
+import com.cyk.mall.common.domain.to.StockTo;
 import com.cyk.mall.stock.service.StockService;
 import com.cyk.mall.stock.domain.to.StockLockTo;
 import com.rabbitmq.client.Channel;

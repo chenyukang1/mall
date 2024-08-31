@@ -1,4 +1,4 @@
-package com.cyk.mall.common.to;
+package com.cyk.mall.common.domain.to;
 
 import lombok.Data;
 
